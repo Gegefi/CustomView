@@ -15,6 +15,8 @@ class SportView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val bounds = Rect()
 
+    private val fontMetrics = Paint.FontMetrics()
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         textSize = 80.dp
         textAlign = Paint.Align.CENTER
@@ -44,7 +46,18 @@ class SportView(context: Context, attrs: AttributeSet) : View(context, attrs) {
         )
 
         paint.style = Paint.Style.FILL
-        paint.getTextBounds("zhaofei", 0, "zhaofei".length, bounds)
-        canvas.drawText("zhaofei", width/2f, height / 2f - (bounds.top + bounds.bottom) / 2, paint)
+
+        //适合测量静态文字的位置，测量的是百分百的居中
+//        paint.getTextBounds("zhaofei", 0, "zhaofei".length, bounds)
+//        canvas.drawText("zhaofei", width/2f, height / 2f - (bounds.top + bounds.bottom) / 2, paint)
+
+        //适合测量动态文字，基本居中
+        paint.getFontMetrics(fontMetrics)
+        canvas.drawText(
+            "zhaofei",
+            width / 2f,
+            height / 2f - (fontMetrics.ascent + fontMetrics.descent) / 2,
+            paint
+        )
     }
 }
