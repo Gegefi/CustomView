@@ -12,6 +12,7 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val bitmap = getAvatar(BITMAP_SIZE)
+    private val camera = Camera()
     private val clipped = Path().apply {
         addOval(BITMAP_PADDING,
             BITMAP_PADDING,
@@ -19,14 +20,24 @@ class CameraView(context: Context, attrs: AttributeSet) : View(context, attrs) {
             BITMAP_PADDING + BITMAP_SIZE ,Path.Direction.CCW)
     }
 
+    init {
+        camera.rotateX(30f)
+    }
+
     override fun onDraw(canvas: Canvas) {
+        //范围裁切
 //        canvas.clipRect(
 //            BITMAP_PADDING,
 //            BITMAP_PADDING,
 //            BITMAP_PADDING + BITMAP_SIZE / 2,
 //            BITMAP_PADDING + BITMAP_SIZE / 2
 //        )
-        canvas.clipPath(clipped)
+//        canvas.clipPath(clipped)
+
+        //几何变换
+        canvas.translate(BITMAP_PADDING + BITMAP_SIZE / 2, BITMAP_PADDING + BITMAP_SIZE / 2)
+        camera.applyToCanvas(canvas)
+        canvas.translate(-(BITMAP_PADDING + BITMAP_SIZE / 2), -(BITMAP_PADDING + BITMAP_SIZE / 2))
 
         canvas.drawBitmap(bitmap, BITMAP_PADDING, BITMAP_PADDING, paint)
     }
